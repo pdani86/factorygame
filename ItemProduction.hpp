@@ -70,7 +70,7 @@ namespace game {
                 }
                 productionPlan.recipeUses.push_back(ProductionRecipeUse{recipe, {}});
 
-                productionPlan.addRecipeUse(); // TODO
+//                productionPlan.addRecipeUse(); // TODO
 
                 auto& recipeUse = productionPlan.recipeUses.back();
                 for(const auto& inputRequirement : recipe->inputRequirement) {
