@@ -125,23 +125,31 @@ void test_recipes() {
     steelIngotRecipe.inputRequirement.push_back(RecipeInputRequirement{item_ids::IRON_ORE, 45});
     steelIngotRecipe.outputs = {RecipeOutput{item_ids::STEEL_INGOT, 45}};
     steelIngotRecipe.duration.ms = 5000;
-    printRecipeInfo(steelIngotRecipe);
+//    printRecipeInfo(steelIngotRecipe);
 
     Recipe ironIngotRecipe;
     ironIngotRecipe.name = "Iron Ingot";
     ironIngotRecipe.inputRequirement.push_back(RecipeInputRequirement{item_ids::IRON_ORE, 30});
     ironIngotRecipe.outputs = {RecipeOutput{item_ids::IRON_INGOT, 30}};
     ironIngotRecipe.duration.ms = 4000;
-    printRecipeInfo(ironIngotRecipe);
+//    printRecipeInfo(ironIngotRecipe);
+
+    Recipe ironPlateRecipe;
+    ironIngotRecipe.name = "Iron Plate";
+    ironIngotRecipe.inputRequirement.push_back(RecipeInputRequirement{item_ids::IRON_INGOT, 30});
+    ironIngotRecipe.outputs = {RecipeOutput{item_ids::IRON_PLATE, 20}};
+    ironIngotRecipe.duration.ms = 6000;
 
     RecipeCollection recipeCollection;
     recipeCollection.recipes.push_back(steelIngotRecipe);
     recipeCollection.recipes.push_back(ironIngotRecipe);
+    recipeCollection.recipes.push_back(ironPlateRecipe);
 
 
     ProductionGoal goal;
     goal.goals.push_back(ItemProductionSpeed{item_ids::STEEL_INGOT, 90.0});
     goal.goals.push_back(ItemProductionSpeed{item_ids::IRON_INGOT, 30.0});
+    goal.goals.push_back(ItemProductionSpeed{item_ids::IRON_PLATE, 30.0});
     auto plan = RecipePlanner::planForGoal(goal, recipeCollection);
     print(plan);
 }

@@ -26,6 +26,26 @@ namespace game {
         ProductionGoal goal;
         std::vector<ProductionRecipeUse> recipeUses;
         std::vector<ItemProductionSpeed> sources;
+
+        void addSource(ItemProductionSpeed sourceSpeed) {
+            auto it = std::find_if(sources.begin(), sources.end(), [item=sourceSpeed.item](const auto& s){return s.item==item;});
+            if(it == sources.end()) {
+                sources.push_back(sourceSpeed);
+            } else {
+                it->countPerMin += sourceSpeed.countPerMin;
+            }
+        }
+
+        /*
+        void addRecipeUse(ProductionRecipeUse recipeUse) {
+            auto it = std::find_if(recipeUses.begin(), recipeUses.end(), [p=recipeUse.recipe](const auto& r){return r.recipe == p;});
+            if(it == recipeUses.end()) {
+                recipeUses.push_back(recipeUse);
+            } else {
+                // TODO
+            }
+        }
+        */
     };
 
     struct RecipePlanner {
@@ -44,10 +64,14 @@ namespace game {
                 q.pop();
                 auto* recipe = recipeCollection.findRecipeForItem(itemGoal.item);
                 if(!recipe) {
-                    productionPlan.sources.push_back(itemGoal);
+                    //productionPlan.sources.push_back(itemGoal);
+                    productionPlan.addSource(itemGoal);
                     continue;
                 }
                 productionPlan.recipeUses.push_back(ProductionRecipeUse{recipe, {}});
+
+                productionPlan.addRecipeUse(); // TODO
+
                 auto& recipeUse = productionPlan.recipeUses.back();
                 for(const auto& inputRequirement : recipe->inputRequirement) {
                     auto countPerMin = inputRequirement.count * 60 * 1000 / (double)recipe->duration.ms;
